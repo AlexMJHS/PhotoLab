@@ -27,6 +27,14 @@ public class PictureTester
     caterpillar.explore();
   }
   
+  public static void testMirrorVerticalRightToLeft()
+  {
+	  Picture caterpillar = new Picture("caterpillar.jpg");
+	    caterpillar.explore();
+	    caterpillar.mirrorVerticalRightToLeft();
+	    caterpillar.explore();
+  }
+  
   /** Method to test mirrorTemple */
   public static void testMirrorTemple()
   {
@@ -34,6 +42,14 @@ public class PictureTester
     temple.explore();
     temple.mirrorTemple();
     temple.explore();
+  }
+  
+  public static void testRandomColor()
+  {
+	  Picture randomCat = new Picture("caterpillar.jpg");
+	  randomCat.explore();
+	  randomCat.randomColor();
+	  randomCat.explore();
   }
   
   /** Method to test the collage method */
@@ -59,14 +75,16 @@ public class PictureTester
     // uncomment a call here to run a test
     // and comment out the ones you don't want
     // to run
-    testZeroBlue();
+    //testZeroBlue();
     //testKeepOnlyBlue();
     //testKeepOnlyRed();
     //testKeepOnlyGreen();
     //testNegate();
     //testGrayscale();
     //testFixUnderwater();
+	testRandomColor();
     testMirrorVertical();
+    testMirrorVerticalRightToLeft();
     //testMirrorTemple();
     //testMirrorArms();
     //testMirrorGull();
