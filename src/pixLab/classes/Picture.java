@@ -108,7 +108,7 @@ public class Picture extends SimplePicture
       for(int col = 0; col < pixels[0].length; col++)
       {
         Pixel currentPixel = pixels[row][col];
-        currentPixel.setRed(0);
+        currentPixel.setRed(50);
         
 //The code below would also work as line 110 and 111
 //        pixels[row][col].setRed(0);
@@ -123,7 +123,34 @@ public class Picture extends SimplePicture
     {
       for (Pixel pixelObj : rowArray)
       {
-        pixelObj.setGreen(0);
+        pixelObj.setGreen(75);
+      }
+    }
+  }
+  
+  public void keepOnlyBlue()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  for (Pixel[] rowArray : pixels)
+	  {
+		  for (Pixel pixelObj : rowArray)
+		  {
+			  pixelObj.setGreen(0);
+			  pixelObj.setRed(0);
+		  }
+	  }
+  }
+  
+  public void Negate()
+  {
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels)
+    {
+      for (Pixel pixelObj : rowArray)
+      {
+        pixelObj.setGreen(225);
+        pixelObj.setRed(255);
+        pixelObj.setRed(225);
       }
     }
   }
@@ -255,8 +282,10 @@ public class Picture extends SimplePicture
   {
     Picture beach = new Picture("seagull.jpg");
     beach.mirrorVertical();
-    beach.zeroBlue();
+    beach.createCollage();
+    beach.keepOnlyBlue();
     beach.explore();
+    beach.write("Jimmy.jpg");
   }
   
 } // this } is the end of class Picture, put all new methods before this
