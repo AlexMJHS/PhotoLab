@@ -206,13 +206,13 @@ public class Picture extends SimplePicture
 	  Pixel[][] pixels = this.getPixels2D();
 	  Pixel leftPixel = null;
 	  Pixel rightPixel = null;
-	  int width = pixels[0].length;
-	  for (int col = 0; col < pixels.length; col++)
+	  int height = pixels.length;
+	  for (int row = 0; row < pixels.length / 2; row++)
 	  {
-		  for (int row = 0; row < width / 2; row++)
+		  for (int col = 0; col < pixels[0].length; col++)
 		  {
 			  leftPixel = pixels[row][col];
-			  rightPixel = pixels[row][width - 1 - col];
+			  rightPixel = pixels[height - 1 - row][col];
 			  rightPixel.setColor(leftPixel.getColor());
 		  }
 	  }
@@ -252,6 +252,23 @@ public class Picture extends SimplePicture
 			  leftPixel = pixels[row][(pictureWidth/2) -(col-pictureWidth/2)];
 			  leftPixel.setColor(rightPixel.getColor());
 			  
+		  }
+	  }
+  }
+  
+  public void mirrorHorizontalTopToBottom()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel topPixel = null;
+	  Pixel bottomPixel = null;
+	  int height = pixels.length;
+	  for(int row = pixels.length - 1; row > pixels.length / 2; row--)
+	  {
+		  for(int col = 0; col < pixels[0].length; col++)
+		  {
+			  topPixel = pixels[row][col];
+			  bottomPixel = pixels[(height / 2) - (row - height / 2)][col];
+			  bottomPixel.setColor(topPixel.getColor());
 		  }
 	  }
   }
@@ -361,12 +378,12 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-    Picture beach = new Picture("seagull.jpg");
-    beach.mirrorVertical();
+    Picture beach = new Picture("arch.jpg");
     beach.mirrorHorizontal();
+    beach.mirrorVertical();
     beach.createCollage();
     beach.zeroBlue();
-    beach.zeroGreen();
+    beach.zeroRed();
     beach.explore();
     beach.write("Jimmy.jpg");
   }
