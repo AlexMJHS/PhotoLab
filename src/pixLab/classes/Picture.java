@@ -141,6 +141,32 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  public void keepOnlyRed()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  for (Pixel[] rowArray : pixels)
+	  {
+		  for (Pixel pixelObj : rowArray)
+		  {
+			  pixelObj.setGreen(0);
+			  pixelObj.setBlue(0);
+		  }
+	  }
+  }
+  
+  public void keepOnlyGreen()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  for (Pixel[] rowArray : pixels)
+	  {
+		  for (Pixel pixelObj : rowArray)
+		  {
+			  pixelObj.setBlue(0);
+			  pixelObj.setRed(0);
+		  }
+	  }
+  }
+  
   public void Negate()
   {
     Pixel[][] pixels = this.getPixels2D();
@@ -173,6 +199,23 @@ public class Picture extends SimplePicture
         rightPixel.setColor(leftPixel.getColor());
       }
     } 
+  }
+  
+  public void mirrorHorizontal()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel leftPixel = null;
+	  Pixel rightPixel = null;
+	  int width = pixels[0].length;
+	  for (int col = 0; col < pixels.length; col++)
+	  {
+		  for (int row = 0; row < width / 2; row++)
+		  {
+			  leftPixel = pixels[row][col];
+			  rightPixel = pixels[row][width - 1 - col];
+			  rightPixel.setColor(leftPixel.getColor());
+		  }
+	  }
   }
   
   public void randomColor()
@@ -320,8 +363,10 @@ public class Picture extends SimplePicture
   {
     Picture beach = new Picture("seagull.jpg");
     beach.mirrorVertical();
+    beach.mirrorHorizontal();
     beach.createCollage();
-    beach.keepOnlyBlue();
+    beach.zeroBlue();
+    beach.zeroGreen();
     beach.explore();
     beach.write("Jimmy.jpg");
   }
