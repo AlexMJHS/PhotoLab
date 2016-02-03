@@ -71,9 +71,43 @@ public class PictureTester
   public static void testKeepOnlyBlue()
   {
 	  Picture seagull = new Picture("seagull.jpg");
+	  seagull.keepOnlyBlue();
 	  seagull.explore();
-	  seagull.KeepOnlyBlue();
+  }
+  
+  public static void testKeepOnlyRed()
+  {
+	  Picture seagull = new Picture("seagull.jpg");
+	  seagull.keepOnlyRed();
 	  seagull.explore();
+  }
+  
+  public static void testKeepOnlyGreen()
+  {
+	  Picture seagull = new Picture("seagull.jpg");
+	  seagull.keepOnlyGreen();
+	  seagull.explore();
+  }
+  
+  public static void testMirrorHorizontal()
+  {
+	  Picture koala = new Picture("koala.jpg");
+	  koala.mirrorHorizontal();
+	  koala.explore();
+  }
+  
+  public static void testMirrorHorizontalBottomToTop()
+  {
+	  Picture koala = new Picture("koala.jpg");
+	  koala.mirrorHorizontalBottomToTop();
+	  koala.explore();
+  }
+  
+  public static void testMirrorArms()
+  {
+	  Picture snowman = new Picture("snowman.jpg");
+	  snowman.mirrorArms();
+	  snowman.explore();
   }
   
   /** Main method for testing.  Every class can have a main
@@ -93,8 +127,10 @@ public class PictureTester
 	//testRandomColor();
     //testMirrorVertical();
     testMirrorVerticalRightToLeft();
+    testMirrorHorizontal();
+    testMirrorHorizontalBottomToTop();
     testMirrorTemple();
-    //testMirrorArms();
+    testMirrorArms();
     //testMirrorGull();
     //testMirrorDiagonal();
     //testCollage();

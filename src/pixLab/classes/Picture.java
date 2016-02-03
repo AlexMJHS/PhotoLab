@@ -94,7 +94,7 @@ public class Picture extends SimplePicture
     {
       for (Pixel pixelObj : rowArray)
       {
-        pixelObj.setBlue(150);
+        pixelObj.setBlue(0);
       }
     }
   }
@@ -256,7 +256,7 @@ public class Picture extends SimplePicture
 	  }
   }
   
-  public void mirrorHorizontalTopToBottom()
+  public void mirrorHorizontalBottomToTop()
   {
 	  Pixel[][] pixels = this.getPixels2D();
 	  Pixel topPixel = null;
@@ -295,6 +295,35 @@ public class Picture extends SimplePicture
         rightPixel.setColor(leftPixel.getColor());
       }
     }
+  }
+  
+  public void mirrorArms()
+  {
+	  int mirrorPoint = 195;
+	  int secondPoint = 195;
+	  Pixel leftPixel = null;
+	  Pixel rightPixel = null;
+	  int count = 0;
+	  Pixel [][] pixels = this.getPixels2D();
+	  
+	  for(int row = 165; row < 195; row++)
+	  {
+		  for(int col = 100; col < mirrorPoint; col++)
+		  {
+			  leftPixel = pixels[row][col];
+			  rightPixel = pixels[mirrorPoint - row + mirrorPoint][col];
+			  rightPixel.setColor(leftPixel.getColor());
+		  }
+	  }
+	  for(int row = 175; row < 195; row++)
+	  {
+		  for(int col = 236; col < 295; col++)
+		  {
+			  leftPixel = pixels[row][col];
+			  rightPixel = pixels[secondPoint - row + secondPoint][col];
+			  rightPixel.setColor(leftPixel.getColor());
+		  }
+	  }
   }
   
   /** copy from the passed fromPic to the
@@ -347,7 +376,7 @@ public class Picture extends SimplePicture
   
   
   /** Method to show large changes in color 
-    * @param edgeDist the distance for finding edges
+    * @param edgeDist the distance for finding edge
     */
   public void edgeDetection(int edgeDist)
   {
@@ -378,12 +407,8 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-    Picture beach = new Picture("arch.jpg");
-    beach.mirrorHorizontal();
-    beach.mirrorVertical();
-    beach.createCollage();
-    beach.zeroBlue();
-    beach.zeroRed();
+    Picture beach = new Picture("snowman.jpg");
+    beach.mirrorArms();
     beach.explore();
     beach.write("Jimmy.jpg");
   }

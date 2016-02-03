@@ -133,7 +133,7 @@ public class IntArrayWorker
 	  {
 		  for(int col = 0; col < matrix[0].length; col++)
 		  {
-			  
+			  count = Integer.MAX_VALUE;
 		  }
 	  }
 	  return count;
