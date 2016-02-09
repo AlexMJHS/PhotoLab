@@ -170,13 +170,111 @@ public class Picture extends SimplePicture
   public void Negate()
   {
     Pixel[][] pixels = this.getPixels2D();
-    for (Pixel[] rowArray : pixels)
+    
+    for(Pixel[] rowArray : pixels)
     {
-      for (Pixel pixelObj : rowArray)
+    	for (Pixel pixelObj : rowArray)
+    	{
+    		pixelObj.setRed(pixelObj.getRed() - 255);
+    		pixelObj.setGreen(pixelObj.getGreen() - 255);
+    		pixelObj.setBlue(pixelObj.getBlue() - 255);
+    	}
+    }
+  }
+  
+  public  void grayscale()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  
+	    for (Pixel[] rowArray : pixels)
+	    {
+	      for (Pixel pixelObj : rowArray)
+	      {
+	    	  int avg = (int)((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3);
+	          pixelObj.setRed(avg);
+	          pixelObj.setBlue(avg);
+	          pixelObj.setGreen(avg);
+	      }
+	    }
+  }
+
+  public void fixUnderwater()
+  {
+    Pixel[][] pixels = this.getPixels2D();
+    
+    int redAverage = 0;
+    int greenAverage = 0;
+    int blueAverage = 0;
+    int totalPixels = 0;
+    
+    int maxRed = 0;
+    int minRed = 255;
+    int maxGreen = 0;
+    int minGreen = 255;
+    int maxBlue = 0;
+    int minBlue = 255;
+    
+    // takes a sample from a fish and finds the average color value and range of colors
+    for (int row = 26; row < 36; row++)
+    {
+        for (int col = 178; col < 198; col++)
+        {
+            totalPixels++;
+            
+            Pixel myPixel = pixels[row][col];
+            
+            redAverage += myPixel.getRed();
+            greenAverage += myPixel.getGreen();
+            blueAverage += myPixel.getBlue();
+            
+            if (myPixel.getRed() > maxRed) { maxRed = myPixel.getRed(); }
+            if (myPixel.getRed() < minRed) { minRed = myPixel.getRed(); }
+            if (myPixel.getGreen() > maxGreen) { maxGreen = myPixel.getGreen(); }
+            if (myPixel.getGreen() < minGreen) { minGreen = myPixel.getGreen(); }
+            if (myPixel.getBlue() > maxBlue) { maxBlue = myPixel.getBlue(); }
+            if (myPixel.getGreen() < minBlue) { minBlue = myPixel.getBlue(); }
+            
+        }
+    }
+    
+    redAverage = redAverage / totalPixels;
+    greenAverage = greenAverage / totalPixels;
+    blueAverage = blueAverage / totalPixels;
+    
+    Color averageColor = new Color(redAverage, greenAverage, blueAverage);
+    
+    // calculates the range
+    int redRange = (maxRed - minRed);
+    int greenRange = (maxGreen - minGreen);
+    int blueRange = (maxBlue - minBlue);
+    
+    int redDistance = redRange;
+    int greenDistance = greenRange;
+    int blueDistance = blueRange;
+    
+    double maxDistance = Math.sqrt(redDistance * redDistance +
+                                   greenDistance * greenDistance +
+                                   blueDistance * blueDistance);
+    
+    double tolerance = 1.7; // higher tolerance means more pixels will be identified as "fish"
+    
+    // changes the image based on calculated distance from sample value
+    for (int row = 0; row < pixels.length; row++) // Pixel[] rowArray : pixels)
+    {
+      for (int col = 0; col < pixels[0].length; col++) // Pixel pixelObj : rowArray)
       {
-        pixelObj.setGreen(225);
-        pixelObj.setRed(255);
-        pixelObj.setRed(225);
+          Pixel myPixel = pixels[row][col]; //
+          
+          boolean closeEnough = myPixel.colorDistance(averageColor) < maxDistance * tolerance; // stopped here, define this***
+          // System.out.println(myPixel.colorDistance(averageColor));
+          if (closeEnough)
+          {
+              myPixel.setBlue(myPixel.getBlue() + 50);
+          }
+          else
+          {
+              myPixel.setBlue(myPixel.getBlue() - 50);
+          }
       }
     }
   }
@@ -217,6 +315,50 @@ public class Picture extends SimplePicture
 		  }
 	  }
   }
+  
+  public void mirrorDigonal()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel bottomPixel = null;
+	  Pixel topPixel = null;
+	  int width = pixels[0].length;
+	  for(int row = 0; row < pixels.length; row++)
+	  {
+		  for(int col = 0; col <  pixels[0].length ; col++)
+		  {
+			  if (col < pixels.length)
+		        {
+		            bottomPixel = pixels[row][col];
+		            topPixel = pixels[col][row];
+		            bottomPixel.setColor(topPixel.getColor());
+		        }
+		  }
+	  }
+  }
+  
+  public void mirrorGull()
+  {
+	  int mirrorPoint = 350;
+	    Pixel leftPixel = null;
+	    Pixel rightPixel = null;
+	    int count = 0;
+	    Pixel[][] pixels = this.getPixels2D();
+	    
+	    // loop through the rows
+	    for (int row = 232; row < 324; row++)
+	    {
+	      // loop from 13 to just before the mirror point
+	      for (int col = 237; col < mirrorPoint; col++)
+	      {
+	        
+	        leftPixel = pixels[row][col];      
+	        rightPixel = pixels[row]                       
+	                         [mirrorPoint - col + mirrorPoint];
+	        rightPixel.setColor(leftPixel.getColor());
+	      }
+	    }
+  }
+  
   
   public void randomColor()
   {
@@ -408,7 +550,7 @@ public class Picture extends SimplePicture
   public static void main(String[] args) 
   {
     Picture beach = new Picture("snowman.jpg");
-    beach.mirrorArms();
+    beach.Negate();
     beach.explore();
     beach.write("Jimmy.jpg");
   }
